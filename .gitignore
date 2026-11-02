@@ -1,0 +1,8 @@
+results/
+runs_v21/
+lmmse_v21/
+smoke/
+.root
+*_weights.tar
+__pycache__/
+*.pyc

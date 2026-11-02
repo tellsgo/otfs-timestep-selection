@@ -1,0 +1,6 @@
+regA_std
+diffA_std
+diffS_std
+diffE_std
+diffA_std_ss_v800
+reg_std_ss_v800
