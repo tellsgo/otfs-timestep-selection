@@ -1,10 +1,13 @@
 #!/bin/bash
 # Evaluations behind the paper, in order.  A result that already exists is skipped (delete it to recompute).
 # Run through run_all.sh (it sets ROOT and PY).  CPU-only steps use OTFS_THREADS threads (default 16).
-set -e
-cd "$ROOT/code"; R="$ROOT/runs_v21"; O="$ROOT/results/v21"
+# A failed step is reported and the next steps still run; the summary at the end lists the failures (exit 1 if any).
+cd "$ROOT/code" || exit 1; R="$ROOT/runs_v21"; O="$ROOT/results/v21"
 ev() { local out="$O/$1"; shift; if [ -f "$out" ]; then echo "[skip] $(basename "$out")"; return; fi
-       echo "[eval] $(basename "$out")"; "$@" > "$out.log" 2>&1 || { echo "failed, see $out.log"; exit 1; }; }
+       echo "[eval] $(basename "$out")"; "$@" > "$out.log" 2>&1 && { DONE_N=$((DONE_N+1)); return; }
+       echo "[FAILED] $(basename "$out"), see $out.log"; FAILED+=("$(basename "$out")"); }
+DONE_N=0; FAILED=()
+summary() { echo "== $DONE_N steps computed now, ${#FAILED[@]} failed${FAILED:+: ${FAILED[*]}}"; [ ${#FAILED[@]} -eq 0 ]; }
 CPU="env CUDA_VISIBLE_DEVICES= OTFS_DEV=cpu OTFS_THREADS=${OTFS_THREADS:-16}"
 EV="$PY -m otfs5.evaluate"
 # Fig. 1 and the step study; main grid of the anchored diffusion model and the regression network
@@ -16,7 +19,8 @@ ev p1_ablation.json $PY p1_ablation.py
 import torch
 b = torch.load('$R/diffE_std/best.pt', map_location='cpu', weights_only=False)
 l = torch.load('$R/diffE_std/last.pt', map_location='cpu', weights_only=False)
-torch.save(dict(ema=l['ema'], scale=l['scale'], step=l['step'], val=None, config=b['config']), '$R/diffE_std/last_cfg.pt')"
+torch.save(dict(ema=l['ema'], scale=l['scale'], step=l['step'], val=None, config=b['config']), '$R/diffE_std/last_cfg.pt')" \
+  || { echo "[FAILED] diffE_std/last_cfg.pt (needs runs_v21/diffE_std/last.pt)"; FAILED+=(diffE_std/last_cfg.pt); }
 ev p1_ablation_eps_last.json $PY p1_ablation.py $R/diffE_std/last_cfg.pt $O/p1_ablation_eps_last.json
 # Table II: SNR-matched start
 ev p1_snrstart_v.json $PY p1_snrstart.py $R/diffA_std/best.pt $O/p1_snrstart_v.json
@@ -32,4 +36,4 @@ if [ -n "$V1_CKPT" ] && [ -n "$V1_DATA" ]; then
   ev v1_ablation.json bash -c "cd v1check && $PY v1_ablation.py"
   ev v1check_spacing_n1000.json bash -c "cd v1check && $PY v1check.py 1000"
 else echo "[skip] v1_ablation, v1check: set V1_CKPT and V1_DATA (README)"; fi
-echo P1 EVALUATIONS DONE
+echo P1 EVALUATIONS FINISHED; summary

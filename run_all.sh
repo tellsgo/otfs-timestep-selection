@@ -4,7 +4,7 @@
 #   bash run_all.sh smoke      # 2-minute environment check (tiny training and evaluation, nothing is kept)
 #   bash run_all.sh weights    # download the trained networks of the paper (GitHub release)
 #   bash run_all.sh train      # only the networks (resumable, finished networks are skipped)
-#   bash run_all.sh eval       # only the evaluations (needs the trained networks)
+#   bash run_all.sh eval       # only the evaluations (needs the trained networks); a failed step does not stop the others
 #   bash run_all.sh check      # compare results/v21 with reference_results (the numbers in the paper)
 # Environment: PY (python with torch, default: python), CUDA_VISIBLE_DEVICES (GPU to use).
 set -e
@@ -33,13 +33,13 @@ case "$STAGE" in
     rm -rf smoke; find lmmse_v21 -name '*_n256_*' -delete; echo "SMOKE OK" ;;
   weights)
     # trained networks of the paper (GitHub release), so that eval and check can run without training
-    T=P1_weights.tar; URL="${WEIGHTS_URL:-https://github.com/tellsgo/otfs-timestep-selection/releases/download/v1.0/$T}"
+    T=P1_weights.tar; URL="${WEIGHTS_URL:-https://github.com/tellsgo/otfs-timestep-selection/releases/download/v1.1/$T}"
     [ -f "$T" ] || curl -L --fail -o "$T" "$URL"
     if command -v sha256sum >/dev/null; then sha256sum -c weights.sha256; else shasum -a 256 -c weights.sha256; fi
     tar -xf "$T"; for d in runs_v21/*/; do touch "$d/DONE"; done; rm -f "$T"; echo "WEIGHTS OK" ;;
   train) "$PY" pipeline/train_run.py $(cat pipeline/runs.txt) ;;
   eval)  bash pipeline/steps.sh ;;
   check) "$PY" pipeline/check_results.py ;;
-  all)   "$PY" pipeline/train_run.py $(cat pipeline/runs.txt); bash pipeline/steps.sh; "$PY" pipeline/check_results.py ;;
+  all)   "$PY" pipeline/train_run.py $(cat pipeline/runs.txt); bash pipeline/steps.sh || FAIL=1; "$PY" pipeline/check_results.py; exit ${FAIL:-0} ;;
   *) echo "unknown stage $STAGE"; exit 1 ;;
 esac

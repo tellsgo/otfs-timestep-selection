@@ -30,7 +30,7 @@ pip install -r requirements.txt
 
 ```
 bash run_all.sh smoke    # 先做环境检查：GPU上几分钟；没有GPU时加 OTFS_DEV=cpu，约半小时
-bash run_all.sh weights  # 下载论文训练好的网络（200 MB，GitHub release），之后 eval、check 不必训练
+bash run_all.sh weights  # 下载论文训练好的网络（233 MB，GitHub release），之后 eval、check 不必训练
 bash run_all.sh          # 完整复现：训练全部网络，跑全部评估，最后和论文数字对比
 ```
 
@@ -40,7 +40,7 @@ bash run_all.sh          # 完整复现：训练全部网络，跑全部评估�
 CUDA_VISIBLE_DEVICES=0 PY=~/miniconda3/envs/otfs/bin/python bash run_all.sh
 ```
 
-中断后重新运行同一条命令即可：训练好的网络（目录里有`DONE`）和已有的结果会自动跳过，训练到一半的网络从`last.pt`继续。长任务请放在`tmux`或`screen`里跑。
+中断后重新运行同一条命令即可：训练好的网络（目录里有`DONE`）和已有的结果会自动跳过，训练到一半的网络从`last.pt`继续。某一步评估失败不会中断其余步骤：`eval`会报告它、继续跑完剩下的步骤，并在最后列出全部失败项（日志在`results/v21/`）。长任务请放在`tmux`或`screen`里跑。
 
 ## 需要的算力
 

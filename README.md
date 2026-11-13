@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 ```
 bash run_all.sh smoke                     # environment check: minutes on a GPU, about half an hour with OTFS_DEV=cpu
-bash run_all.sh weights                   # download the trained networks of the paper (200 MB release asset)
+bash run_all.sh weights                   # download the trained networks of the paper (233 MB release asset)
 bash run_all.sh eval && bash run_all.sh check   # rerun every evaluation and compare with the paper
 bash run_all.sh                           # or the full reproduction: train every network, evaluate, compare
 ```
@@ -40,7 +40,7 @@ The stages can also be run one at a time: `train`, `eval`, `check`. `CUDA_VISIBL
 CUDA_VISIBLE_DEVICES=0 PY=~/miniconda3/envs/otfs/bin/python bash run_all.sh
 ```
 
-Rerunning the same command after an interruption continues where it stopped: finished networks (a `DONE` file in their folder) and existing results are skipped, and a network that was half trained resumes from `last.pt`. Run long jobs inside `tmux` or `screen`.
+Rerunning the same command after an interruption continues where it stopped: finished networks (a `DONE` file in their folder) and existing results are skipped, and a network that was half trained resumes from `last.pt`. A failed evaluation step does not stop the others: `eval` reports it, runs the remaining steps and lists every failure at the end (its log is in `results/v21/`). Run long jobs inside `tmux` or `screen`.
 
 ## Compute
 
