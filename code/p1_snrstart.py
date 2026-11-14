@@ -6,7 +6,7 @@ DDIM steps on [t*, t*(S-1)/S, ..., t*/S].  kappa -> 0 gives t* = T - 1 and the t
 checkpoint on validation frames at S = 3; the sweep is stored.  Compared with leading, first-only and trailing grids
 (same checkpoint, same frames, same initial noise) and the regression network (one forward pass).
   python p1_snrstart.py DIFF_CKPT OUT.json"""
-import json, math, sys, zlib, torch
+import json, math, os, sys, zlib, torch
 from otfs5.anchor import AnchorBank
 from otfs5.diffusion import alphas_for, ddim_sample, regress, to_real
 from otfs5.evaluate import load_net
@@ -17,7 +17,6 @@ DIFF, OUT = sys.argv[1], sys.argv[2]
 link = Link(layout=get_layout('std')); anc = AnchorBank(link, 'std')
 dn, dsc, dcfg = load_net(DIFF); rn, rsc, _ = load_net(f'{R}/regA_std/best.pt')
 PRED = dcfg.get('pred', 'v'); ab = alphas_for(dcfg.get('schedule', 'cosine')).to(dev)
-import os
 KAPPAS = tuple(float(k) for k in os.environ['KAPPAS'].split(',')) if 'KAPPAS' in os.environ else \
     (0.0, 1e-4, 3e-4, 1e-3, 3e-3, 1e-2, 3e-2, 1e-1, 3e-1, 1.0)   # 0 gives t* = T - 1, the trailing grid
 GRID = {'lead': lambda S: [int(t) for t in range((S - 1) * (T // S), -1, -(T // S))],
