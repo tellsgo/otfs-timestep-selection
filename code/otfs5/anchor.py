@@ -10,7 +10,7 @@ SNR_GRID = (-5.0, 0.0, 5.0, 10.0, 15.0, 20.0, 25.0)
 
 
 class AnchorBank:
-    def __init__(self, link, layout_name, snrs=SNR_GRID, root='__OTFS_ROOT__/lmmse_v21',
+    def __init__(self, link, layout_name, snrs=SNR_GRID, root='__OTFS_ROOT__/lmmse_v22',
                  paths='__OTFS_ROOT__/paths', device=os.environ.get('OTFS_DEV', 'cuda'), n_draws=int(os.environ.get('OTFS_ANCHOR_DRAWS', 16384)), centre=False,
                  speed_range=(30.0, 500.0), ue_rot=True, bs_rot=1.0471975511965976):
         ss = link.data_tx is not None
@@ -64,7 +64,7 @@ class RxAnchorBank:
     fraction `keep` of output bins with the largest mean channel power is estimated (the rest is zero).
     Weights per SNR: keep * nt*N*M * nt*W complex, against nr*nt*N*M * nr*nt*W for the joint AnchorBank."""
 
-    def __init__(self, link, layout_name, keep=1.0, snrs=SNR_GRID, root='__OTFS_ROOT__/lmmse_v21',
+    def __init__(self, link, layout_name, keep=1.0, snrs=SNR_GRID, root='__OTFS_ROOT__/lmmse_v22',
                  paths='__OTFS_ROOT__/paths', device=os.environ.get('OTFS_DEV', 'cuda'), n_draws=int(os.environ.get('OTFS_ANCHOR_DRAWS', 16384)), speed_range=(30.0, 500.0), ridge=1e-6):
         ss = link.data_tx is not None
         tag = f'rx_{layout_name}_v{speed_range[0]:g}-{speed_range[1]:g}_n{n_draws}' + ('_ss' if ss else '')

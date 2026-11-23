@@ -9,13 +9,13 @@ from otfs5.diffusion import alphas_for, ddim_sample, regress
 from otfs5.evaluate import load_net
 from otfs5.layouts import get_layout
 from otfs5.sim import TRAIN_CITIES, UNSEEN_CITIES, Link, PathBank, Scenario, nmse_db
-dev = os.environ.get('OTFS_DEV', 'cuda'); R = '__OTFS_ROOT__/runs_v21'
+dev = os.environ.get('OTFS_DEV', 'cuda'); R = '__OTFS_ROOT__/runs_v22'
 SEQ = {'lead5': [800, 600, 400, 200, 0], 'first5': [999, 600, 400, 200, 0], 'trail5': [999, 799, 599, 399, 199],
        'lead3': [666, 333, 0], 'first3': [999, 333, 0], 'trail3': [999, 666, 333], 'trail1': [999]}
 PAIRS = [('first5', 'lead5'), ('trail5', 'lead5'), ('trail5', 'first5'), ('first3', 'lead3'), ('trail3', 'lead3'),
          ('trail3', 'first3'), ('trail1', 'lead5'), ('reg', 'trail1')]
 DIFF = sys.argv[1] if len(sys.argv) > 1 else f'{R}/diffA_std/best.pt'      # optional: another diffusion checkpoint
-OUT = sys.argv[2] if len(sys.argv) > 2 else '__OTFS_ROOT__/results/v21/p1_ablation.json'
+OUT = sys.argv[2] if len(sys.argv) > 2 else '__OTFS_ROOT__/results/v22/p1_ablation.json'
 link = Link(layout=get_layout('std')); anc = AnchorBank(link, 'std')
 dn, dsc, dcfg = load_net(DIFF); rn, rsc, _ = load_net(f'{R}/regA_std/best.pt')
 PRED = dcfg.get('pred', 'v'); ab = alphas_for(dcfg.get('schedule', 'cosine')).to(dev)

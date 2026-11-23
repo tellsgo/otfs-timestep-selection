@@ -1,6 +1,6 @@
 results/
-runs_v21/
-lmmse_v21/
+runs_v22/
+lmmse_v22/
 smoke/
 .root
 *_weights.tar

@@ -1,7 +1,7 @@
 """Train one network of this package from its saved configuration, after the networks it depends on.
 
-  python pipeline/train_run.py NAME            # configs/runs/NAME.json -> runs_v21/NAME (skipped if DONE exists)
-  SMOKE=1 python pipeline/train_run.py NAME    # 20 steps into smoke/runs_v21/NAME, to check that the environment works
+  python pipeline/train_run.py NAME            # configs/runs/NAME.json -> runs_v22/NAME (skipped if DONE exists)
+  SMOKE=1 python pipeline/train_run.py NAME    # 20 steps into smoke/runs_v22/NAME, to check that the environment works
 
 The configuration is the config.json that the original training run wrote.  Teacher, first-stage and previous-stage
 networks named in it are trained first.  Interrupted runs resume from last.pt.
@@ -11,8 +11,8 @@ import json, os, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = os.environ.get('PY', sys.executable)
 SMOKE = os.environ.get('SMOKE') == '1'
-RUNS = os.path.join(ROOT, 'smoke' if SMOKE else '', 'runs_v21')
-OLD = 'runs_v21/'
+RUNS = os.path.join(ROOT, 'smoke' if SMOKE else '', 'runs_v22')
+OLD = 'runs_v22/'
 
 
 def cfg_of(name):
@@ -20,7 +20,7 @@ def cfg_of(name):
 
 
 def dep(path):
-    """runs_v21/<name>/best.pt or runs_v21/<name> in a stored config -> (name, path in this package)."""
+    """runs_v22/<name>/best.pt or runs_v22/<name> in a stored config -> (name, path in this package)."""
     rel = path[len(OLD):] if path.startswith(OLD) else None
     if rel is None:
         raise SystemExit(f'unexpected path in config: {path}')

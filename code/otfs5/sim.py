@@ -64,7 +64,7 @@ class PathBank:
         cat = {k: np.concatenate(v, 0) for k, v in cols.items()}
         pw = cat['power']
         valid = np.isfinite(pw)
-        amp = np.where(valid, 10.0 ** (np.where(valid, pw, 0.0) / 20.0), 0.0)
+        amp = np.where(valid, np.sqrt(np.where(valid, pw, 0.0)), 0.0)   # 'power' is linear watts
         ph = np.deg2rad(cat['phase'])
         toa = np.where(valid, cat['toa'], np.inf)
         tau = np.where(valid, toa - toa.min(1, keepdims=True), 0.0)  # timing aligned to first path

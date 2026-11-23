@@ -3,7 +3,7 @@
  "teacher": null,
  "teacher_steps": "1t:8",
  "kd_alpha": 1.0,
- "out": "runs_v21/diffE_std",
+ "out": "runs_v22/diffE_std",
  "layout": "std",
  "steps": 30000,
  "bs": 64,
@@ -26,7 +26,7 @@
  "schedule": "linear",
  "anchor": "lmmse",
  "train_mode": "diff",
- "scale": 0.0026107934771824656,
+ "scale": 0.002255073501495591,
  "params": 8262720,
  "overhead": 0.0672607421875
 }

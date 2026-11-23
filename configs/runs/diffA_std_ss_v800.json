@@ -3,7 +3,7 @@
  "teacher": null,
  "teacher_steps": "1t:8",
  "kd_alpha": 1.0,
- "out": "runs_v21/diffA_std_ss_v800",
+ "out": "runs_v22/diffA_std_ss_v800",
  "layout": "std",
  "steps": 30000,
  "bs": 64,
@@ -22,9 +22,11 @@
  "centre": false,
  "single_stream": true,
  "compile": true,
+ "pred": "v",
+ "schedule": "cosine",
  "anchor": "lmmse",
  "train_mode": "diff",
- "scale": 0.0038614505718601567,
+ "scale": 0.003748265560469084,
  "params": 8262720,
  "overhead": 0.0672607421875
 }

@@ -3,7 +3,7 @@
  "teacher": null,
  "teacher_steps": "1t:8",
  "kd_alpha": 1.0,
- "out": "runs_v21/diffS_std",
+ "out": "runs_v22/diffS_std",
  "layout": "std",
  "steps": 60000,
  "bs": 64,
@@ -20,10 +20,13 @@
  "seed": 0,
  "paths": "paths",
  "centre": false,
+ "single_stream": false,
  "compile": true,
+ "pred": "v",
+ "schedule": "cosine",
  "anchor": "ls",
  "train_mode": "diff",
- "scale": 0.004813616408915355,
+ "scale": 0.004269597432909277,
  "params": 8262720,
  "overhead": 0.0672607421875
 }

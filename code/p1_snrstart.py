@@ -12,7 +12,7 @@ from otfs5.diffusion import alphas_for, ddim_sample, regress, to_real
 from otfs5.evaluate import load_net
 from otfs5.layouts import get_layout
 from otfs5.sim import TRAIN_CITIES, UNSEEN_CITIES, Link, PathBank, Scenario, nmse_db
-dev = os.environ.get('OTFS_DEV', 'cuda'); R = '__OTFS_ROOT__/runs_v21'; P = '__OTFS_ROOT__/paths'; T = 1000
+dev = os.environ.get('OTFS_DEV', 'cuda'); R = '__OTFS_ROOT__/runs_v22'; P = '__OTFS_ROOT__/paths'; T = 1000
 DIFF, OUT = sys.argv[1], sys.argv[2]
 link = Link(layout=get_layout('std')); anc = AnchorBank(link, 'std')
 dn, dsc, dcfg = load_net(DIFF); rn, rsc, _ = load_net(f'{R}/regA_std/best.pt')

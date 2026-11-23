@@ -1,6 +1,6 @@
 """Compare the reproduced results with the reference results behind the paper.
 
-  python pipeline/check_results.py            # every file in reference_results/ that also exists in results/v21/
+  python pipeline/check_results.py            # every file in reference_results/ that also exists in results/v22/
 
 For every pair of numbers at the same place in the two JSON files it reports the largest difference.  Values in dB
 (keys with 'db' or 'nmse') are compared in dB, the others relatively.  Retrained networks and a different GPU give
@@ -9,7 +9,7 @@ small differences, typically a few hundredths to a tenth of a dB, the conclusion
 import json, math, os, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REF, NEW = os.path.join(ROOT, 'reference_results'), os.path.join(ROOT, 'results', 'v21')
+REF, NEW = os.path.join(ROOT, 'reference_results'), os.path.join(ROOT, 'results', 'v22')
 
 
 def leaves(x, path=''):

@@ -59,10 +59,13 @@ with torch.no_grad():
         for b in range(4):
             d, A = frames(val, 'v_val', snr, b); acc.append((to_real(d['H'] - A) / dsc).pow(2).mean().item())
         V[snr] = sum(acc) / len(acc)
+    V_own = dict(V)
+    if os.environ.get('RHO_JSON'):                 # 11-20: use rho measured once for this network (p1_r3_eps, GPU draw), not a CPU redraw
+        V = {float(k): float(x) for k, x in json.load(open(os.environ['RHO_JSON']))['selected']['v'].items()}
     lv = {s_: math.log(V[s_]) for s_ in V}
     interp = lambda x: math.exp(lv[0.0] + (lv[10.0] - lv[0.0]) * x / 10) if x <= 10 else math.exp(lv[10.0] + (lv[20.0] - lv[10.0]) * (x - 10) / 10)
     KAP = float(os.environ.get('KAPPA', '1.0'))
-    res['v'] = V; res['kappa'] = KAP
+    res['v'] = V; res['v_own_cpu_draw'] = V_own; res['kappa'] = KAP
     for sp, cities, part in (('test', TRAIN_CITIES, 'test'), ('unseen', UNSEEN_CITIES, 'all')):
         scen = Scenario(PathBank(P, cities, part, device=dev), link)
         for snr in (5.0, 15.0):
