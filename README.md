@@ -1,6 +1,6 @@
 # Timestep Selection in Diffusion-Based OTFS Channel Estimation
 
-Code for the paper of the same title (under review). The preprint link will be added here.
+Code for the paper of the same title (under review). Preprint: https://arxiv.org/abs/2611.30586.
 
 For diffusion-based MIMO-OTFS channel estimation, more denoising steps are not always better. The paper compares leading and trailing timestep spacing, shows that one trailing DDIM step is more accurate than the default five, and gives a rule that matches the starting timestep to the pilot SNR, which also predicts the best start at SNRs that were not tuned.
 

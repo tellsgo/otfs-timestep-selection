@@ -2,6 +2,8 @@
 
 English: [README.md](README.md)
 
+预印本：https://arxiv.org/abs/2611.30586
+
 扩散模型做MIMO-OTFS信道估计时，去噪步数并不是越多越好。论文比较前置（leading）与尾置（trailing）时间步间隔，说明一步尾置DDIM就比默认五步更准，并给出按导频信噪比匹配起始时间步的规则，在未调参的信噪比上也能预测最优起点。
 
 
